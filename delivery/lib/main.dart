@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'delivery_home.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key});
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 }
 
 class DeliveryHome extends StatefulWidget {
-  const DeliveryHome() : super();
+  const DeliveryHome({super.key});
   @override
   _DeliveryHomeState createState() => _DeliveryHomeState();
 }
@@ -64,7 +64,7 @@ class _DeliveryHomeState extends State<DeliveryHome> {
                 ),
               ],
             ),
-            CircleAvatar(),
+            const CircleAvatar(),
           ],
         ),
       ),
@@ -100,3 +100,4 @@ class _DeliveryHomeState extends State<DeliveryHome> {
     );
   }
 }
+
