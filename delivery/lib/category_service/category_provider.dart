@@ -3,7 +3,7 @@ import 'category.dart';
 import 'dart:convert';
 import 'dart:async';
 
-class CategoryDataProvider {
+class CategoryProvider {
   Future<List<Category>> fetchCategories() async {
     try {
       final response = await http.get(

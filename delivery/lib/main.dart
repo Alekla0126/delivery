@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'delivery_home.dart';
+import 'category_screen.dart';
 
 void main() => runApp(const MyApp());
 
