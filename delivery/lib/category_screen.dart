@@ -57,8 +57,7 @@ class HomeScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => BlocProvider<DishesBloc>(
-                              create: (_) => DishesBloc(
-                                  dishesRepository: DishesRepository()),
+                              create: (_) => DishesBloc(dishesRepository: DishesRepository()),
                               child: DishScreen(categoryName: category.name),
                             ),
                           ),

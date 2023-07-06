@@ -5,15 +5,24 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
+import 'package:delivery/dishes_service/dishes_repository.dart';
+import 'package:delivery/cart_service/cart_repository.dart';
+import 'package:delivery/dishes_service/dishes_bloc.dart';
+import 'package:delivery/cart_service/cart_provider.dart';
+import 'package:delivery/cart_service/cart_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:flutter/material.dart';
 import 'package:delivery/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    final cartDataProvider = CartDataProvider();
+    final cartRepository = CartRepository(cartDataProvider: cartDataProvider);
+    final cartBloc = CartBloc(cartRepository: cartRepository);
+    final dishesBloc = DishesBloc(dishesRepository: DishesRepository());
+
+    await tester.pumpWidget(const MyApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
