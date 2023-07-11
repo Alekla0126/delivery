@@ -71,13 +71,14 @@ class _DeliveryHomeState extends State<DeliveryHome> {
       return AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
           onPressed: _goBackToHome,
         ),
         title: Text(
           state.selectedCategory ?? '',
           style: const TextStyle(color: Colors.black),
         ),
+        centerTitle: true, // Center the title within the AppBar
         actions: const [
           CircleAvatar(),
         ],

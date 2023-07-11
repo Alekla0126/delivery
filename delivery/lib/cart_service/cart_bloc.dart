@@ -26,11 +26,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       final updatedCartItems = cartItems.map((cartItem) {
         if (cartItem.dish == event.dish) {
           final updatedQuantity = cartItem.quantity - 1;
-          return CartItem(dish: cartItem.dish, quantity: updatedQuantity);
+          if (updatedQuantity > 0) {
+            return CartItem(dish: cartItem.dish, quantity: updatedQuantity);
+          } else {
+            return null; // Return null to remove the item from the list
+          }
         } else {
           return cartItem;
         }
-      }).toList();
+      }).whereType<CartItem>().toList();
       await cartRepository.updateCart(updatedCartItems);
       emit(CartLoaded(cartItems: updatedCartItems));
     });

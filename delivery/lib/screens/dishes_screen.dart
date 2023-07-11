@@ -75,13 +75,12 @@ class _DishScreenState extends State<DishScreen> {
                                 Card(
                                   child: IconButton(
                                     onPressed: () {
-                                      setState(() {
-                                        selectedDish!.liked =
-                                        !selectedDish!.liked;
-                                      });
+                                      _toggleLiked(selectedDish!);
                                     },
-                                    icon: const Icon(
-                                      Icons.favorite_border,
+                                    icon: Icon(
+                                      selectedDish!.liked
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
                                       color: Colors.black,
                                     ),
                                   ),
@@ -157,6 +156,10 @@ class _DishScreenState extends State<DishScreen> {
     );
   }
 
+  void _toggleLiked(Dish dish) {
+    _dishesBloc?.add(ToggleDishLikeEvent(dish));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -192,8 +195,7 @@ class _DishScreenState extends State<DishScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(8),
                             child: GridView.builder(
-                              gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,
                                 childAspectRatio: 0.8,
                                 mainAxisSpacing: 8,

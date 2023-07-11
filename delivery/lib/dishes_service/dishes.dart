@@ -19,6 +19,21 @@ class Dish {
     this.liked = false,
   });
 
+  Dish copyWith({
+    bool? liked,
+  }) {
+    return Dish(
+      id: id,
+      name: name,
+      price: price,
+      weight: weight,
+      description: description,
+      imageUrl: imageUrl,
+      tags: tags,
+      liked: liked ?? this.liked,
+    );
+  }
+
   factory Dish.fromJson(Map<String, dynamic> json) {
     return Dish(
       id: json['id'],

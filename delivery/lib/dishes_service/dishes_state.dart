@@ -1,4 +1,4 @@
-import 'dishes.dart'; // Update this import as per your project structure
+import 'dishes.dart'; // Import the Dish class
 
 abstract class DishesState {}
 
@@ -16,4 +16,10 @@ class DishesErrorState extends DishesState {
   final String error;
 
   DishesErrorState({required this.error});
+}
+
+class DishLikedState extends DishesState {
+  final Dish dish;
+
+  DishLikedState({required this.dish});
 }
