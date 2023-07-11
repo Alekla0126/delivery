@@ -2,4 +2,4 @@
 
 UI delivery app made with Flutter.
 
-![Demo](assets/Demo.mp4)
+![Demo](~/assets/Demo.mp4)
