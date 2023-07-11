@@ -28,6 +28,11 @@ class CartDataProvider {
     }
   }
 
+  void updateCart(List<CartItem> cartItems) {
+    _cartItems.clear();
+    _cartItems.addAll(cartItems);
+  }
+
   List<CartItem> getCart() {
     return _cartItems;
   }

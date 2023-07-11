@@ -1,134 +1,164 @@
-import 'package:delivery/cart_service/cart_provider.dart';
 import 'package:delivery/cart_service/cart_repository.dart';
+import 'package:delivery/cart_service/cart_provider.dart';
+import 'package:delivery/screens/cart_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:delivery/cart_screen.dart';
+import 'dishes_service/dishes_repository.dart';
+import 'buttom_nav_bar/buttom_nav_bar.dart';
+import 'dishes_service/dishes_bloc.dart';
 import 'package:flutter/material.dart';
+import 'components/bottomNavBar.dart';
+import 'screens/category_screen.dart';
 import 'cart_service/cart_bloc.dart';
+import 'screens/dishes_screen.dart';
 import 'package:intl/intl.dart';
-import 'category_screen.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Delivery App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    final cartDataProvider = CartDataProvider();
+    final cartRepository = CartRepository(cartDataProvider: cartDataProvider);
+    final cartBloc = CartBloc(cartRepository: cartRepository);
+    final dishesBloc = DishesBloc(dishesRepository: DishesRepository());
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CartBloc>(create: (_) => cartBloc),
+        BlocProvider<DishesBloc>(create: (_) => dishesBloc),
+        BlocProvider<BottomNavBarBloc>(
+          create: (_) => BottomNavBarBloc(),
+          lazy: false,
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Delivery App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: DeliveryHome(),
       ),
-      home: const DeliveryHome(),
     );
   }
 }
 
 class DeliveryHome extends StatefulWidget {
-  const DeliveryHome({super.key});
+  DeliveryHome({Key? key}) : super(key: key);
+
   @override
   _DeliveryHomeState createState() => _DeliveryHomeState();
 }
 
 class _DeliveryHomeState extends State<DeliveryHome> {
-  late final CartDataProvider cartDataProvider;
-  late final CartRepository cartRepository;
-  late final CartBloc cartBloc;
-  int _currentIndex = 0;
-  late final List<Widget> _children;
+  String selectedCategory = '';
 
-  @override
-  void initState() {
-    super.initState();
-    cartDataProvider = CartDataProvider();
-    cartRepository = CartRepository(cartDataProvider: cartDataProvider);
-    cartBloc = CartBloc(cartRepository: cartRepository);
-    _children = [
-      const HomeScreen(),
-      Container(),
-      CheckoutScreen(cartBloc: cartBloc),
-      Container()
-    ];
+  void _goBackToHome() {
+    setState(() {
+      selectedCategory = '';
+    });
+    BlocProvider.of<BottomNavBarBloc>(context).add(ChangeNavBarIndex(0));
+  }
+
+  AppBar buildAppBar(NavBarState state) {
+    final currentDate = DateFormat.yMMMMd().format(DateTime.now());
+
+    if (state.showDishesScreen) {
+      return AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: _goBackToHome,
+        ),
+        title: Text(
+          state.selectedCategory ?? '',
+          style: const TextStyle(color: Colors.black),
+        ),
+        actions: const [
+          CircleAvatar(),
+        ],
+      );
+    } else {
+      return AppBar(
+        backgroundColor: Colors.white,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Location",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  currentDate,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            const CircleAvatar(),
+          ],
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentDate = DateFormat.yMMMMd().format(DateTime.now()); // Get current date
-
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<CartBloc>(
-          create: (_) => cartBloc,
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: BlocBuilder<BottomNavBarBloc, NavBarState>(
+          builder: (context, state) {
+            return buildAppBar(state);
+          },
         ),
-      ],
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            leading: const Icon(Icons.location_on, color: Colors.black),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Location",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      currentDate, // Display current date
-                      style: const TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-                const CircleAvatar(),
-              ],
-            ),
-          ),
-          body: _children[_currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: _currentIndex,
+      ),
+      body: BlocBuilder<BottomNavBarBloc, NavBarState>(
+        builder: (context, state) {
+          if (state.showDishesScreen) {
+            return DishScreen(
+              categoryName: state.selectedCategory ?? '',
+              currentIndex: state.index,
+              goBackToHome: _goBackToHome,
+            );
+          }
+          switch (state.index) {
+            case 0:
+              return HomeScreen(
+                currentIndex: state.index,
+                onSelectCategory: (category) =>
+                    BlocProvider.of<BottomNavBarBloc>(context).add(ShowDishesScreen(category)),
+              );
+            case 1:
+              return const Placeholder();
+            case 2:
+              return CheckoutScreen(currentIndex: state.index);
+            default:
+              return const Placeholder();
+          }
+        },
+      ),
+      bottomNavigationBar: BlocBuilder<BottomNavBarBloc, NavBarState>(
+        builder: (context, state) {
+          return BottomNavBar(
+            currentIndex: state.index,
             onTap: (int index) {
-              // If it's not the first or third item, then do nothing
-              if (index != 0 && index != 2) {
-                return;
-              }
-              // Otherwise, update the state
-              setState(() {
-                _currentIndex = index;
-              });
+              BlocProvider.of<BottomNavBarBloc>(context).add(ChangeNavBarIndex(index));
             },
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.grey,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: "Home",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: "Search",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart),
-                label: "Shopping Cart",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle),
-                label: "Account",
-              ),
-            ],
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 }
-

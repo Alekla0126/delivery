@@ -6,6 +6,7 @@ class Dish {
   final String description;
   final String imageUrl;
   final List<String> tags;
+  bool liked;
 
   Dish({
     required this.id,
@@ -15,6 +16,7 @@ class Dish {
     required this.description,
     required this.imageUrl,
     required this.tags,
+    this.liked = false,
   });
 
   factory Dish.fromJson(Map<String, dynamic> json) {

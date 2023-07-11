@@ -22,7 +22,7 @@ void main() {
     final cartBloc = CartBloc(cartRepository: cartRepository);
     final dishesBloc = DishesBloc(dishesRepository: DishesRepository());
 
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(MyApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

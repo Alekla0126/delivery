@@ -13,3 +13,15 @@ class RemoveDish extends CartEvent {
 
   RemoveDish({required this.dish});
 }
+
+class DecrementQuantity extends CartEvent {
+  final Dish dish;
+
+  DecrementQuantity({required this.dish});
+}
+
+class IncrementQuantity extends CartEvent {
+  final Dish dish;
+
+  IncrementQuantity({required this.dish});
+}
