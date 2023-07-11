@@ -2,7 +2,4 @@
 
 UI delivery app made with Flutter.
 
-<video width="640" height="360" controls>
-  <source src="assets/Demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[![Demo Video](https://img.youtube.com/vi/w1VpadNA15k/0.jpg)](https://www.youtube.com/watch?v=w1VpadNA15k)
