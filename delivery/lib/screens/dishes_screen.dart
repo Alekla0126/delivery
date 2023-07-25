@@ -216,7 +216,7 @@ class _DishScreenState extends State<DishScreen> {
                                             aspectRatio: 1,
                                             child: Image.network(
                                               dish.imageUrl,
-                                              fit: BoxFit.fill,
+                                              fit: BoxFit.contain,
                                             ),
                                           ),
                                         ),
