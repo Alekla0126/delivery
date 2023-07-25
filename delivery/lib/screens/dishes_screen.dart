@@ -49,107 +49,108 @@ class _DishScreenState extends State<DishScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.white,
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (selectedDish != null)
-                Column(
-                  children: [
-                    Card(
-                      color: Colors.white,
-                      child: Stack(
-                        alignment: Alignment.topRight,
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (selectedDish != null)
+                  Column(
+                    children: [
+                      Card(
+                        color: Colors.white,
+                        child: Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            Flexible(
+                              child: Image.network(
+                                selectedDish!.imageUrl,
+                                fit: BoxFit.scaleDown,
+                              ),
+                            ),
+                            Positioned(
+                              top: 8,
+                              right: 8,
+                              child: Row(
+                                children: [
+                                  Card(
+                                    child: IconButton(
+                                      onPressed: () {
+                                        _toggleLiked(selectedDish!);
+                                      },
+                                      icon: Icon(
+                                        selectedDish!.liked
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  Card(
+                                    child: IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: const Icon(
+                                        Icons.close,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          AspectRatio(
-                            aspectRatio: 1,
-                            child: Image.network(
-                              selectedDish!.imageUrl,
-                              fit: BoxFit.fill,
+                          Text(
+                            '\$${selectedDish!.price.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
                           ),
-                          Positioned(
-                            top: 8,
-                            right: 8,
-                            child: Row(
-                              children: [
-                                Card(
-                                  child: IconButton(
-                                    onPressed: () {
-                                      _toggleLiked(selectedDish!);
-                                    },
-                                    icon: Icon(
-                                      selectedDish!.liked
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                                Card(
-                                  child: IconButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    icon: const Icon(
-                                      Icons.close,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          Text(
+                            '   ${selectedDish!.weight}г',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '\$${selectedDish!.price.toStringAsFixed(2)}',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                      const SizedBox(height: 8),
+                      Text(
+                        selectedDish!.description,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
                         ),
-                        Text(
-                          '   ${selectedDish!.weight}г',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      selectedDish!.description,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
                       ),
-                    ),
-                  ],
-                ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: MediaQuery.of(context).size.width, // Set your desired padding here
-                child: ElevatedButton(
-                  onPressed: () {
-                    final cartBloc = context.read<CartBloc>();
-                    cartBloc.add(AddDish(dish: selectedDish!));
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorFromHex('3364E0'), // provide the primary color
+                    ],
                   ),
-                  child: const Text('Add to Cart'),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final cartBloc = context.read<CartBloc>();
+                      cartBloc.add(AddDish(dish: selectedDish!));
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorFromHex('3364E0'),
+                    ),
+                    child: const Text('Add to Cart'),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
