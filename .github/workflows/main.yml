@@ -2,7 +2,7 @@ name: Flutter Web Deploy
 on:
   push:
     branches:
-      - main
+      - frontend
 jobs:
   build:    
     runs-on: ubuntu-latest
