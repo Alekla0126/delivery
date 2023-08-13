@@ -1,9 +1,9 @@
 import 'package:delivery/category_service/category_provider.dart';
 import '../category_service/category_repository.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../category_service/category_states.dart';
 import '../category_service/category_events.dart';
 import '../category_service/category_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {

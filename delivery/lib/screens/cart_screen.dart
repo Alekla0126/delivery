@@ -1,8 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:delivery/cart_service/cart_state.dart';
 import 'package:delivery/cart_service/cart_bloc.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cart_service/cart_event.dart';
+import 'package:flutter/material.dart';
 import '../dishes_service/dishes.dart';
 
 Color colorFromHex(String hexColor) {

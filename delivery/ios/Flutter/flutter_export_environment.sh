@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/Users/alejandro/Documents/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/alejandro/Desktop/DeliveryApp/delivery"
+export "FLUTTER_APPLICATION_PATH=/Users/alejandro/Desktop/Life/Apps/DeliveryApp/delivery"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"

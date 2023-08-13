@@ -1,8 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:delivery/cart_service/cart_repository.dart';
 import 'package:delivery/cart_service/cart_event.dart';
 import 'package:delivery/cart_service/cart_state.dart';
 import 'package:delivery/cart_service/cartItem.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class CartBloc extends Bloc<CartEvent, CartState> {

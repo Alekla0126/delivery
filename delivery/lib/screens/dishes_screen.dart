@@ -60,11 +60,17 @@ class _DishScreenState extends State<DishScreen> {
                       child: Stack(
                         alignment: Alignment.topRight,
                         children: [
-                          AspectRatio(
-                            aspectRatio: 1,
-                            child: Image.network(
-                              selectedDish!.imageUrl,
-                              fit: BoxFit.fill,
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: 300.0, // Adjust these values as needed
+                              maxHeight: 300.0,
+                            ),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Image.network(
+                                selectedDish!.imageUrl,
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
                           Positioned(
